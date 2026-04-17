@@ -150,10 +150,10 @@ export default function OnboardingEditor() {
             <Eye className="w-4 h-4" />
             Preview
           </button>
-          <button onClick={handleClaimUrl} className="bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition text-sm text-white border border-white/5">
+          {/* <button onClick={handleClaimUrl} className="bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition text-sm text-white border border-white/5">
             <LinkIcon className="w-4 h-4" />
             Share
-          </button>
+          </button> */}
         </div>
       </header>
 

@@ -12,10 +12,8 @@ async function getUserData(username) {
   try {
     const user = await User.findOne({ username }).lean();
     if (user) {
-      user._id = user._id.toString();
-      user.createdAt = user.createdAt.toString();
-      user.updatedAt = user.updatedAt.toString();
-      return user;
+      // Deep convert to plain object to solve ObjectId/Date warnings
+      return JSON.parse(JSON.stringify(user));
     }
   } catch (error) {
     console.error(error);

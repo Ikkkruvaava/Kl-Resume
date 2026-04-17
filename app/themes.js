@@ -13,5 +13,20 @@ export const THEMES = {
   },
   'github-dev': {
     name: 'Developer Hub',
+  },
+  'aurora-night': {
+    name: 'Aurora Night',
+  },
+  'retro-synth': {
+    name: 'Retro Synthwave',
+  },
+  'glass-soft': {
+    name: 'Glassmorphism Soft',
+  },
+  'magazine-edit': {
+    name: 'Editorial Magazine',
+  },
+  'cyber-yellow': {
+    name: 'Cyber Industrial',
   }
 };

@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import { Mail, MessageCircle, MapPin, ExternalLink, ArrowUpRight, Github, BookOpen, Star, GitBranch, Layers } from 'lucide-react';
 import { SocialIcon } from '../SocialIcon';

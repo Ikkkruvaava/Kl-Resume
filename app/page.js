@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Sparkles, Save, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Sparkles, Save, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X } from 'lucide-react';
 import Link from 'next/link';
 import { savePortfolio } from './actions';
 import { SocialIcon, PLATFORMS } from '@/components/SocialIcon';
@@ -18,6 +18,7 @@ const MALAYALAM_BIOS = [
 
 export default function OnboardingEditor() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showPreview, setShowPreview] = useState(false);
   const totalSteps = 4;
 
   const [formData, setFormData] = useState({
@@ -140,19 +141,25 @@ export default function OnboardingEditor() {
     <main className="min-h-screen p-4 md:p-8 flex flex-col items-center bg-[url('/grid.svg')]">
       <div className="absolute inset-0 bg-black/80 z-[-1]"></div>
       
-      <header className="w-full max-w-7xl mx-auto mb-8 flex justify-between items-center">
+      <header className="w-full max-w-4xl mx-auto mb-8 flex justify-between items-center px-4">
         <h1 className="text-2xl font-black tracking-tighter bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
           KL RESUME
         </h1>
-        <button onClick={handleClaimUrl} className="glassmorphism px-4 py-2 rounded-full font-semibold flex items-center gap-2 hover:bg-white/20 transition text-white">
-          <LinkIcon className="w-4 h-4" />
-          Claim URL
-        </button>
+        <div className="flex items-center gap-3">
+          <button onClick={() => setShowPreview(true)} className="glassmorphism px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-white/10 transition text-sm text-white border border-white/10">
+            <Eye className="w-4 h-4" />
+            Preview
+          </button>
+          <button onClick={handleClaimUrl} className="bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition text-sm text-white border border-white/5">
+            <LinkIcon className="w-4 h-4" />
+            Share
+          </button>
+        </div>
       </header>
 
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
+      <div className="w-full max-w-4xl mx-auto relative px-4 pb-20">
         {/* The Editor Sidebar (Wizard) */}
-        <div className="bento-card flex flex-col">
+        <div className="bento-card flex flex-col min-h-[600px] shadow-2xl border-white/5 bg-zinc-900/40 backdrop-blur-3xl">
           <div className="flex justify-between items-center mb-4">
             <div>
               <h2 className="text-xl font-bold flex items-center gap-2 text-white">
@@ -417,20 +424,48 @@ export default function OnboardingEditor() {
 
           </form>
         </div>
+      </div>
 
-        {/* The Live Dashboard Preview using Dynamic Component Themes */}
-        <div className="sticky top-8 hidden lg:flex justify-center items-start group">
-          <div className="w-[340px] xl:w-[375px] h-[720px] xl:h-[780px] border-[12px] border-zinc-950 rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)] relative bg-zinc-950 outline outline-1 outline-zinc-800">
-            {/* Inner Profile Scroll Area */}
-            <div className="w-full h-full overflow-y-auto hide-scrollbar bg-black">
-              {(() => {
-                const LayoutComponent = ThemeLayouts[formData.theme] || ThemeLayouts['bento-dark'];
-                return <LayoutComponent data={{ ...formData, portfolio: { ...formData, skills: typeof formData.skills === 'string' ? formData.skills.split(',').map(s => s.trim()) : formData.skills } }} />
-              })()}
+      {/* FULL-VIEWPORT PREVIEW SYSTEM */}
+      {showPreview && (
+        <div className="fixed inset-0 z-[100] flex flex-col animate-in fade-in zoom-in-95 duration-300 bg-black">
+          {/* Preview Navigation Bar */}
+          <div className="w-full h-14 bg-zinc-900 border-b border-white/10 flex items-center justify-between px-6 shrink-0 relative z-[110]">
+            <div className="flex items-center gap-4">
+              <div className="flex gap-1.5">
+                <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
+              </div>
+              <div className="bg-black/40 border border-white/10 px-4 py-1 rounded-lg text-xs font-mono text-zinc-400 select-all">
+                klresume.in/{formData.username || 'your-url'}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+               <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest hidden md:block">
+                 Viewing: <span className="text-purple-400">{THEMES[formData.theme]?.name}</span>
+               </span>
+               <button 
+                 onClick={() => setShowPreview(false)}
+                 className="flex items-center gap-2 bg-white text-black px-4 py-1.5 rounded-lg text-xs font-black uppercase hover:bg-zinc-200 transition active:scale-95"
+               >
+                 <X className="w-4 h-4" /> Exit
+               </button>
+            </div>
+          </div>
+
+          {/* Actual Rendering Area */}
+          <div className="flex-1 w-full overflow-y-auto overflow-x-hidden hide-scrollbar bg-white">
+            <div className="w-full relative min-h-full">
+               {(() => {
+                 const LayoutComponent = ThemeLayouts[formData.theme] || ThemeLayouts['bento-dark'];
+                 return <LayoutComponent data={{ ...formData, portfolio: { ...formData, skills: typeof formData.skills === 'string' ? formData.skills.split(',').map(s => s.trim()) : formData.skills } }} />
+               })()}
             </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

@@ -22,7 +22,7 @@ export default function TerminalTheme({ data }) {
 
         <div className="p-4 md:p-10">
           <p className="mb-8 opacity-50 text-[10px] md:text-xs leading-relaxed">
-            SYSTEM VERSION: 2.0.4-LTS (KERALA_NODE_CLUSTER)<br />
+            SYSTEM VERSION: 2.1.0-ULTRA (KERALA_NODE_CLUSTER)<br />
             LAST LOGIN: {date} FROM 127.0.0.1
           </p>
           
@@ -44,7 +44,7 @@ export default function TerminalTheme({ data }) {
               <div className="text-center md:text-left">
                 <h1 className="text-2xl md:text-4xl font-black mb-2 uppercase tracking-tight text-white shadow-[0_2px_10px_rgba(51,255,0,0.1)]">{data.name}</h1>
                 <div className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] md:text-xs mb-6 justify-center md:justify-start">
-                  <span className="text-white font-bold">&gt; ROLE: <span className="text-[#33ff00]">FULLSTACK_ENGINEER</span></span>
+                  <span className="text-white font-bold">&gt; FIELD: <span className="text-[#33ff00]">{portfolio?.careerField?.toUpperCase() || 'GENERALIST'}</span></span>
                   {portfolio?.location && <span className="text-white font-bold">&gt; LOC: <span className="text-[#33ff00]">{portfolio.location}</span></span>}
                 </div>
                 {portfolio?.malayalamTagline && <p className="text-[#33ff00]/70 mb-4 text-xs md:text-sm italic font-bold">/* {portfolio.malayalamTagline} */</p>}
@@ -52,6 +52,43 @@ export default function TerminalTheme({ data }) {
               </div>
             </div>
           </div>
+
+          {/* New Section: Career Timeline */}
+          {(portfolio?.experience?.length > 0 || portfolio?.education?.length > 0) && (
+            <div className="mb-12">
+               <div className="flex items-center gap-2 mb-6">
+                <span className="text-white opacity-80">user@{data.username || "user"}:~$</span>
+                <span className="font-bold text-[#33ff00]">history --career</span>
+              </div>
+              <div className="pl-2 md:pl-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                {portfolio.experience?.length > 0 && (
+                  <div className="space-y-6">
+                    <p className="text-white text-xs font-black uppercase tracking-widest bg-[#33ff00]/10 py-1 px-3 w-fit border border-[#33ff00]/30 mb-4">Work_Experience</p>
+                    {portfolio.experience.map((exp, idx) => (
+                      <div key={idx} className="relative pl-4 border-l-2 border-[#33ff00]/30 group">
+                        <div className="absolute -left-[5px] top-0 w-2 h-2 bg-[#33ff00] shadow-[0_0_5px_#33ff00]"></div>
+                        <p className="text-white font-bold text-sm tracking-tight">{exp.role} @ {exp.company}</p>
+                        <p className="text-[10px] opacity-60 mb-2">{exp.duration}</p>
+                        <p className="text-[10px] text-[#33ff00]/80 leading-relaxed group-hover:text-[#33ff00] transition-colors">{exp.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {portfolio.education?.length > 0 && (
+                  <div className="space-y-6">
+                    <p className="text-white text-xs font-black uppercase tracking-widest bg-[#33ff00]/10 py-1 px-3 w-fit border border-[#33ff00]/30 mb-4">Education_Log</p>
+                    {portfolio.education.map((edu, idx) => (
+                      <div key={idx} className="border border-[#33ff00]/20 p-3 hover:bg-[#33ff00]/5 transition-all">
+                        <p className="text-white font-bold text-sm">{edu.degree}</p>
+                        <p className="text-[10px] opacity-70 mb-1">{edu.school}</p>
+                        <p className="text-[10px] font-black text-[#33ff00] underline">{edu.year}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Section: Skills */}
           <div className="mb-12">

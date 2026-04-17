@@ -19,11 +19,11 @@ const MALAYALAM_BIOS = [
 export default function OnboardingEditor() {
   const [currentStep, setCurrentStep] = useState(1);
   const [showPreview, setShowPreview] = useState(false);
-  const totalSteps = 4;
-
+  const totalSteps = 5;
   const [formData, setFormData] = useState({
     name: 'Alex Doe',
     username: 'alex',
+    careerField: 'Fullstack Engineer',
     bio: 'Creative Developer & Designer crafting next-generation digital experiences.',
     malayalamTagline: 'Oru cheriya developer, valiya swapnangal 🚀',
     contactEmail: 'hello@alexdoe.com',
@@ -39,11 +39,19 @@ export default function OnboardingEditor() {
     projects: [
       { title: "Bento Portfolio", description: "A highly customizable personal site.", link: "https://klresume.in", image: '' }
     ],
+    education: [
+      { school: 'CUSAT', degree: 'B.Tech CS', year: '2022' }
+    ],
+    experience: [
+      { company: 'Tech Solutions', role: 'Dev Intern', duration: '6 Months', description: 'Worked on React components.' }
+    ],
     image: '',
   });
 
   const [newSocial, setNewSocial] = useState({ platform: 'GitHub', url: '' });
   const [newProject, setNewProject] = useState({ title: '', description: '', link: '', image: '' });
+  const [newEdu, setNewEdu] = useState({ school: '', degree: '', year: '' });
+  const [newExp, setNewExp] = useState({ company: '', role: '', duration: '', description: '' });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -111,6 +119,40 @@ export default function OnboardingEditor() {
     }));
   };
 
+  const addEducation = () => {
+    if (newEdu.school.trim() && newEdu.degree.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        education: [...prev.education, newEdu]
+      }));
+      setNewEdu({ school: '', degree: '', year: '' });
+    }
+  };
+
+  const removeEducation = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      education: prev.education.filter((_, i) => i !== index)
+    }));
+  };
+
+  const addExperience = () => {
+    if (newExp.company.trim() && newExp.role.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        experience: [...prev.experience, newExp]
+      }));
+      setNewExp({ company: '', role: '', duration: '', description: '' });
+    }
+  };
+
+  const removeExperience = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      experience: prev.experience.filter((_, i) => i !== index)
+    }));
+  };
+
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async (e) => {
@@ -167,7 +209,7 @@ export default function OnboardingEditor() {
                 Customize Portfolio
               </h2>
               <p className="text-xs text-zinc-400 mt-2 font-semibold uppercase tracking-widest">
-                Step {currentStep} of {totalSteps}: {['Personal Info', 'Contact & Socials', 'Skills & Projects', 'Design & Deploy'][currentStep - 1]}
+                Step {currentStep} of {totalSteps}: {['Identity', 'Career Legacy', 'Social Hub', 'Proof of Work', 'Launch Engine'][currentStep - 1]}
               </p>
             </div>
           </div>
@@ -208,8 +250,13 @@ export default function OnboardingEditor() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Bio</label>
-                  <textarea name="bio" value={formData.bio} onChange={handleInputChange} className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 h-24 resize-none text-white"></textarea>
+                  <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Career Field / Role</label>
+                  <input type="text" name="careerField" value={formData.careerField} onChange={handleInputChange} placeholder="e.g. Flutter Developer / Architect" className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Professional Bio</label>
+                  <textarea name="bio" value={formData.bio} onChange={handleInputChange} placeholder="Summary of your expertise..." className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 h-24 resize-none text-white"></textarea>
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -222,8 +269,69 @@ export default function OnboardingEditor() {
               </div>
             )}
 
-            {/* STEP 2: CONTACT & SOCIALS */}
+            {/* STEP 2: CAREER LEGACY (EXPERIENCE & EDUCATION) */}
             {currentStep === 2 && (
+              <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                
+                {/* WORK EXPERIENCE */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Work Experience</label>
+                  <div className="flex flex-col gap-3">
+                    {formData.experience.map((exp, index) => (
+                      <div key={index} className="flex justify-between items-start bg-zinc-800/50 border border-zinc-700 rounded-xl p-3">
+                        <div>
+                          <p className="text-sm font-bold text-white">{exp.role} @ {exp.company}</p>
+                          <p className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">{exp.duration}</p>
+                        </div>
+                        <button type="button" onClick={() => removeExperience(index)} className="text-red-400 hover:bg-red-500/20 p-2 rounded-lg transition ml-2">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-2 bg-zinc-800/30 p-3 rounded-2xl border border-zinc-700/50">
+                    <div className="grid grid-cols-2 gap-2">
+                      <input type="text" placeholder="Company" value={newExp.company} onChange={(e) => setNewExp({...newExp, company: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-xs text-white rounded-lg px-3 py-2 outline-none" />
+                      <input type="text" placeholder="Role" value={newExp.role} onChange={(e) => setNewExp({...newExp, role: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-xs text-white rounded-lg px-3 py-2 outline-none" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input type="text" placeholder="Duration (e.g. 2022 - Present)" value={newExp.duration} onChange={(e) => setNewExp({...newExp, duration: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-xs text-white rounded-lg px-3 py-2 outline-none" />
+                      <button type="button" onClick={addExperience} className="bg-purple-600/20 text-purple-400 border border-purple-500/30 text-[10px] font-black uppercase rounded-lg px-3 py-2 hover:bg-purple-600 hover:text-white transition">Add Exp</button>
+                    </div>
+                    <textarea placeholder="Briefly describe what you did..." value={newExp.description} onChange={(e) => setNewExp({...newExp, description: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-xs text-white rounded-lg px-3 py-2 outline-none h-16 resize-none" />
+                  </div>
+                </div>
+
+                {/* EDUCATION */}
+                <div className="flex flex-col gap-2 border-t border-zinc-800/50 pt-4">
+                  <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-2">Education</label>
+                  <div className="flex flex-col gap-3">
+                    {formData.education.map((edu, index) => (
+                      <div key={index} className="flex justify-between items-center bg-zinc-800/50 border border-zinc-700 rounded-xl px-3 py-2">
+                        <div className="overflow-hidden">
+                          <p className="text-sm font-bold text-white truncate">{edu.degree}</p>
+                          <p className="text-[10px] text-zinc-500 truncate">{edu.school} &bull; {edu.year}</p>
+                        </div>
+                        <button type="button" onClick={() => removeEducation(index)} className="text-red-400 hover:bg-red-500/20 p-2 rounded-lg transition ml-2 flex-shrink-0">
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 mt-2 bg-zinc-800/30 p-2 rounded-2xl border border-zinc-700/50">
+                    <input type="text" placeholder="School" value={newEdu.school} onChange={(e) => setNewEdu({...newEdu, school: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-[10px] text-white rounded-lg px-2 py-2 outline-none" />
+                    <input type="text" placeholder="Degree" value={newEdu.degree} onChange={(e) => setNewEdu({...newEdu, degree: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-[10px] text-white rounded-lg px-2 py-2 outline-none" />
+                    <input type="text" placeholder="Year" value={newEdu.year} onChange={(e) => setNewEdu({...newEdu, year: e.target.value})} className="bg-zinc-800 border border-zinc-700 text-[10px] text-white rounded-lg px-2 py-2 outline-none" />
+                    <button type="button" onClick={addEducation} className="col-span-3 bg-zinc-700 text-white text-[10px] font-bold py-2 rounded-lg hover:bg-zinc-600 transition">Add Education</button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 3: CONTACT & SOCIALS */}
+            {currentStep === 3 && (
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Public Contact Email</label>
@@ -290,8 +398,8 @@ export default function OnboardingEditor() {
               </div>
             )}
 
-            {/* STEP 3: SKILLS & PROJECTS */}
-            {currentStep === 3 && (
+            {/* STEP 4: SKILLS & PROJECTS */}
+            {currentStep === 4 && (
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Top Skills (comma separated)</label>
@@ -358,8 +466,8 @@ export default function OnboardingEditor() {
               </div>
             )}
 
-            {/* STEP 4: DESIGN & DEPLOYMENT */}
-            {currentStep === 4 && (
+            {/* STEP 5: DESIGN & DEPLOYMENT */}
+            {currentStep === 5 && (
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-white uppercase tracking-widest">Select Portfolio Theme</label>
@@ -402,7 +510,7 @@ export default function OnboardingEditor() {
             )}
 
             {/* Navigation Controls */}
-            <div className={`flex justify-between items-center mt-10 pt-6 border-t border-zinc-800/50 ${currentStep === 4 ? 'hidden' : ''}`}>
+            <div className={`flex justify-between items-center mt-10 pt-6 border-t border-zinc-800/50 ${currentStep === 5 ? 'hidden' : ''}`}>
               <button 
                 type="button" 
                 onClick={() => setCurrentStep(prev => prev - 1)} 
@@ -458,10 +566,11 @@ export default function OnboardingEditor() {
           {/* Actual Rendering Area */}
           <div className="flex-1 w-full overflow-y-auto overflow-x-hidden hide-scrollbar bg-white">
             <div className="w-full relative min-h-full">
-               {(() => {
-                 const LayoutComponent = ThemeLayouts[formData.theme] || ThemeLayouts['bento-dark'];
-                 return <LayoutComponent data={{ ...formData, portfolio: { ...formData, skills: typeof formData.skills === 'string' ? formData.skills.split(',').map(s => s.trim()) : formData.skills } }} />
-               })()}
+                    {(() => {
+                      const LayoutComponent = ThemeLayouts[formData.theme] || ThemeLayouts['bento-dark'];
+                      const skillsArray = typeof formData.skills === 'string' ? formData.skills.split(',').map(s => s.trim()) : formData.skills;
+                      return <LayoutComponent data={{ ...formData, portfolio: { ...formData, skills: skillsArray } }} />
+                    })()}
             </div>
           </div>
         </div>

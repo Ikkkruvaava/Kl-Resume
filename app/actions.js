@@ -6,13 +6,16 @@ export async function savePortfolio(formData) {
   try {
     await dbConnect();
     
-    const { name, username, bio, malayalamTagline, skills, socialLinks, image, projects, contactEmail, whatsapp, location, theme } = formData;
+    const { 
+      name, username, image, theme, 
+      bio, careerField, malayalamTagline, skills, 
+      socialLinks, projects, education, experience, 
+      contactEmail, whatsapp, location 
+    } = formData;
     
     // Format the skills array
     const skillsArray = typeof skills === 'string' ? skills.split(',').map(s => s.trim()) : skills;
 
-    // We use findOneAndUpdate with upsert: true to insert or update the user based on their username.
-    // NOTE: This uses a mock email because we haven't implemented complete NextAuth flow yet.
     await User.findOneAndUpdate(
       { username },
       {
@@ -23,10 +26,13 @@ export async function savePortfolio(formData) {
         theme: theme || 'bento-dark',
         portfolio: {
           bio,
+          careerField,
           malayalamTagline,
           skills: skillsArray,
           socialLinks,
           projects,
+          education,
+          experience,
           contactEmail,
           whatsapp,
           location

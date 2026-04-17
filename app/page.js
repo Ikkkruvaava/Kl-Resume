@@ -14,15 +14,15 @@ const MALAYALAM_BIOS = [
 
 export default function OnboardingEditor() {
   const [formData, setFormData] = useState({
-    name: 'Mohammed Mishab',
-    username: 'mishab',
-    bio: 'Building awesome GenZ products for the web.',
+    name: 'Alex Doe',
+    username: 'alex',
+    bio: 'Creative Developer & Designer crafting next-generation digital experiences.',
     malayalamTagline: 'Oru cheriya developer, valiya swapnangal 🚀',
     skills: 'Next.js, Tailwind, MongoDB',
-    instagram: 'mishab',
-    github: 'mishab',
-    linkedin: 'mishab',
-    youtube: '',
+    instagram: 'alexdoe',
+    github: 'alexdoe',
+    linkedin: 'alexdoe',
+    youtube: 'alexdoe',
     image: '',
   });
 

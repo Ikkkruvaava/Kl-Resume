@@ -22,23 +22,24 @@ async function getUserData(username) {
   }
   
   // Return dummy data for demo purposes since we don't have seeded DB
-  if (username === 'mishab' || username === 'demo') {
+  if (username === 'alex' || username === 'demo') {
     return {
-      name: 'Mohammed Mishab',
+      name: 'Alex Doe',
       username: username,
-      image: '/avatar.png',
+      image: '',
       portfolio: {
-        bio: "I'm a full-stack developer focused on building fast, scalable web apps. I love React, Node, and everything Gen-Z aesthetic.",
+        bio: "Creative Developer & Designer crafting next-generation digital experiences. Exploring the boundaries of Gen-Z aesthetics and modern web tech.",
         malayalamTagline: "Oru cheriya developer, valiya swapnangal 🚀",
-        skills: ["Next.js", "React", "MongoDB", "TailwindCSS", "Node.js", "Framer Motion"],
+        skills: ["Next.js", "React", "MongoDB", "TailwindCSS", "Framer Motion"],
         projects: [
-          { title: "Gen Z Portfolio Engine", description: "A platform for Kerala's youth to build aesthetic portfolios.", link: "#" },
-          { title: "Digital Quran App", description: "Android app for daily recitations, built with React Native.", link: "#" },
+          { title: "Bento Portfolio", description: "A highly customizable personal site with dynamic social cards.", link: "#" },
+          { title: "Aesthetic Notes App", description: "A minimal, offline-first notes application with a dark UI.", link: "#" },
         ],
         socialLinks: {
-          instagram: "mishab",
-          github: "mishab",
-          linkedin: "mishab",
+          instagram: "alexdoe",
+          github: "alexdoe",
+          linkedin: "alexdoe",
+          youtube: "alexdoe"
         }
       }
     };

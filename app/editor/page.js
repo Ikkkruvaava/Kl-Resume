@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Sparkles, Save, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X } from 'lucide-react';
+import { Sparkles, Save, Rocket, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X } from 'lucide-react';
 import Link from 'next/link';
 import { savePortfolio } from '../actions';
 import { SocialIcon, PLATFORMS } from '@/components/SocialIcon';
@@ -59,7 +59,7 @@ function EditorContent() {
     const themeParam = searchParams.get('theme');
     if (themeParam && THEMES[themeParam]) {
       setFormData(prev => ({ ...prev, theme: themeParam }));
-      setCurrentStep(5); // Jump to design step to show it
+      setCurrentStep(2); // Start at Identity after choosing theme
     }
   }, [searchParams]);
 
@@ -219,7 +219,7 @@ function EditorContent() {
                 Customize Portfolio
               </h2>
               <p className="text-xs text-zinc-400 mt-2 font-semibold uppercase tracking-widest">
-                Step {currentStep} of {totalSteps}: {['Identity', 'Career Legacy', 'Social Hub', 'Proof of Work', 'Launch Engine'][currentStep - 1]}
+                Step {currentStep} of {totalSteps}: {['Select Theme', 'Identity', 'Career Legacy', 'Social Hub', 'Launch Portfolio'][currentStep - 1]}
               </p>
             </div>
           </div>
@@ -231,8 +231,56 @@ function EditorContent() {
 
           <form onSubmit={(e) => e.preventDefault()} className="flex-1">
             
-            {/* STEP 1: PERSONAL INFO */}
+            {/* STEP 1: THEME SELECTION */}
             {currentStep === 1 && (
+              <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-white uppercase tracking-widest">Select Your Aesthetic</label>
+                  <p className="text-xs text-zinc-400 mb-4">Choose a theme to start. You can preview how it looks with sample data before you begin entering your own details.</p>
+                  
+                  <div className="grid grid-cols-2 gap-3 pb-4">
+                    {Object.entries(THEMES).map(([key, t]) => (
+                      <button
+                        key={key}
+                        onClick={() => setFormData(prev => ({...prev, theme: key}))}
+                        type="button"
+                        className={`p-4 rounded-2xl border text-left transition relative overflow-hidden group ${
+                          formData.theme === key 
+                            ? 'bg-purple-500/20 border-purple-500 text-white scale-[1.02] shadow-lg shadow-purple-500/10' 
+                            : 'bg-zinc-800/50 border-zinc-700 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                        }`}
+                      >
+                        <p className="font-black text-sm tracking-tight uppercase italic">{t.name}</p>
+                        <div className={`absolute top-0 right-0 w-8 h-8 flex items-center justify-center transition-opacity ${formData.theme === key ? 'opacity-100' : 'opacity-0'}`}>
+                           <CheckCircle2 className="w-4 h-4 text-purple-500" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-zinc-800/30 border border-zinc-700 p-6 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6">
+                   <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center">
+                         <Eye className="w-6 h-6 text-zinc-400" />
+                      </div>
+                      <div>
+                         <p className="text-sm font-bold text-white uppercase tracking-tighter">Live Preview Mode</p>
+                         <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest leading-none mt-1">Check how your data fills the gaps</p>
+                      </div>
+                   </div>
+                   <button 
+                     onClick={() => setShowPreview(true)}
+                     className="w-full md:w-auto bg-white text-black px-8 py-3 rounded-2xl font-black text-xs uppercase hover:bg-zinc-200 transition active:scale-95"
+                   >
+                     Preview with Sample Data
+                   </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: PERSONAL INFO (Formerly Step 1) */}
+            {currentStep === 2 && (
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Profile Picture</label>
@@ -279,8 +327,8 @@ function EditorContent() {
               </div>
             )}
 
-            {/* STEP 2: CAREER LEGACY (EXPERIENCE & EDUCATION) */}
-            {currentStep === 2 && (
+            {/* STEP 3: CAREER LEGACY (Formerly Step 2) */}
+            {currentStep === 3 && (
               <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 
                 {/* WORK EXPERIENCE */}
@@ -340,8 +388,8 @@ function EditorContent() {
               </div>
             )}
 
-            {/* STEP 3: CONTACT & SOCIALS */}
-            {currentStep === 3 && (
+            {/* STEP 4: CONTACT & SOCIALS (Formerly Step 3) */}
+            {currentStep === 4 && (
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Public Contact Email</label>
@@ -408,8 +456,8 @@ function EditorContent() {
               </div>
             )}
 
-            {/* STEP 4: SKILLS & PROJECTS */}
-            {currentStep === 4 && (
+            {/* STEP 5: PROJECTS & LAUNCH (Formerly Step 4 + 5) */}
+            {currentStep === 5 && (
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Top Skills (comma separated)</label>
@@ -467,54 +515,31 @@ function EditorContent() {
                       type="button"
                       onClick={addProject}
                       disabled={!newProject.title.trim()}
-                      className="mt-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-50 text-white text-sm font-bold py-2 rounded-xl flex items-center justify-center gap-2 transition"
+                      className="mt-2 bg-gradient-to-r from-zinc-700 to-zinc-900 hover:bg-zinc-600 disabled:opacity-50 text-white text-xs font-bold py-2 rounded-xl flex items-center justify-center gap-2 transition"
                     >
                       <Plus className="w-4 h-4" /> Add Project
                     </button>
                   </div>
                 </div>
-              </div>
-            )}
 
-            {/* STEP 5: DESIGN & DEPLOYMENT */}
-            {currentStep === 5 && (
-              <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-white uppercase tracking-widest">Select Portfolio Theme</label>
-                  <p className="text-xs text-zinc-400 mb-2">Choose from 10 radically different aesthetics. The Live Preview on the right will instantly rebuild your entire layout!</p>
-                  
-                  <div className="grid grid-cols-2 gap-3 pb-4">
-                    {Object.entries(THEMES).map(([key, t]) => (
-                      <button
-                        key={key}
-                        onClick={() => setFormData(prev => ({...prev, theme: key}))}
-                        type="button"
-                        className={`p-3 rounded-xl border text-left transition ${
-                          formData.theme === key 
-                            ? 'bg-purple-500/20 border-purple-500 text-white scale-[1.02]' 
-                            : 'bg-zinc-800/50 border-zinc-700 text-zinc-400 hover:bg-zinc-700 hover:text-white'
-                        }`}
-                      >
-                        <p className="font-bold text-sm tracking-tight">{t.name}</p>
-                      </button>
-                    ))}
+                {/* FINAL DEPLOY BUTTON */}
+                <div className="mt-8 pt-8 border-t border-zinc-800">
+                  <div className="items-center text-center py-6">
+                    <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-4 mx-auto">
+                      <CheckCircle2 className="w-8 h-8 font-black" />
+                    </div>
+                    <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none mb-2">Ready to Go Live?</h3>
+                    <p className="text-xs text-zinc-500 font-bold uppercase tracking-widest mb-6">Your aesthetic digital identity is one click away.</p>
+                    <button 
+                      type="button"
+                      disabled={isSaving} 
+                      onClick={handleSave} 
+                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black py-5 px-6 rounded-[1.8rem] flex justify-center items-center gap-3 hover:from-purple-500 hover:to-pink-500 shadow-2xl shadow-purple-500/40 transition active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-xl uppercase italic tracking-tighter"
+                    >
+                      <Rocket className="w-6 h-6 animate-pulse" />
+                      {isSaving ? "Initializing Deploment..." : "Launch Portfolio"}
+                    </button>
                   </div>
-                </div>
-
-                <div className="items-center text-center py-6 border-t border-zinc-800/50">
-                  <div className="w-16 h-16 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-2xl font-black text-white">You're Ready to Publish!</h3>
-                  <button 
-                    type="button"
-                    disabled={isSaving} 
-                    onClick={handleSave} 
-                    className="mt-6 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black py-4 px-6 rounded-2xl flex justify-center items-center gap-2 hover:from-purple-500 hover:to-pink-500 shadow-xl shadow-purple-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed text-lg"
-                  >
-                    <Save className="w-5 h-5" />
-                    {isSaving ? "Saving Portfolio..." : "Deploy Portfolio"}
-                  </button>
                 </div>
               </div>
             )}

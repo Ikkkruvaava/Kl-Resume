@@ -24,32 +24,21 @@ function EditorContent() {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const totalSteps = 5;
   const [formData, setFormData] = useState({
-    name: 'Alex Doe',
-    username: 'alex',
-    careerField: 'Fullstack Engineer',
-    bio: 'Creative Developer & Designer crafting next-generation digital experiences.',
-    malayalamTagline: 'Oru cheriya developer, valiya swapnangal 🚀',
-    contactEmail: 'hello@alexdoe.com',
-    whatsapp: '+919876543210',
-    location: 'Kochi, Kerala',
-    skills: 'Next.js, Tailwind, MongoDB',
+    name: '',
+    username: '',
+    careerField: '',
+    bio: '',
+    malayalamTagline: '',
+    contactEmail: '',
+    whatsapp: '',
+    location: '',
+    skills: '',
     theme: 'bento-dark',
-    socialLinks: [
-      { platform: 'GitHub', url: 'https://github.com/alexdoe' },
-      { platform: 'LinkedIn', url: 'https://linkedin.com/in/alexdoe' },
-      { platform: 'Instagram', url: 'https://instagram.com/alexdoe' }
-    ],
-    projects: [
-      { title: "Personal Brand Engine", description: "A high-performance portfolio system built for creators.", link: "https://klresume.in", image: '/images/sampleproject1.webp' },
-      { title: "Design Systems Library", description: "Modular UI components for scalable web applications.", link: "https://github.com", image: '/images/sampleproject2.webp' }
-    ],
-    education: [
-      { school: 'CUSAT', degree: 'B.Tech CS', year: '2022' }
-    ],
-    experience: [
-      { company: 'Tech Solutions', role: 'Dev Intern', duration: '6 Months', description: 'Worked on React components.' }
-    ],
-    image: '/images/sampleprofile.webp',
+    socialLinks: [],
+    projects: [],
+    education: [],
+    experience: [],
+    image: '',
   });
 
   const [newSocial, setNewSocial] = useState({ platform: 'GitHub', url: '' });
@@ -202,9 +191,12 @@ function EditorContent() {
       <div className="absolute inset-0 bg-black/80 z-[-1]"></div>
       
       <header className="w-full max-w-4xl mx-auto mb-8 flex justify-between items-center px-4">
-        <h1 className="text-2xl font-black tracking-tighter bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-          KL RESUME
-        </h1>
+        <Link href="/" className="flex items-center gap-3 group">
+          <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-8 h-8 rounded-lg group-hover:rotate-12 transition-transform" />
+          <h1 className="text-xl font-black tracking-tighter bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent uppercase italic">
+            KL RESUME
+          </h1>
+        </Link>
         <div className="flex items-center gap-3">
           {currentStep !== 1 && (
             <button onClick={() => setShowPreview(true)} className="glassmorphism px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-white/10 transition text-sm text-white border border-white/10">
@@ -306,14 +298,14 @@ function EditorContent() {
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Name</label>
-                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
+                  <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Enter your full name" className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Username (URL)</label>
                   <div className="flex items-center bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-purple-500">
                     <span className="text-zinc-500">klresume.in/</span>
-                    <input type="text" name="username" value={formData.username} onChange={handleInputChange} className="bg-transparent border-none outline-none flex-1 text-white" />
+                    <input type="text" name="username" value={formData.username} onChange={handleInputChange} placeholder="username" className="bg-transparent border-none outline-none flex-1 text-white" />
                   </div>
                 </div>
 
@@ -332,7 +324,7 @@ function EditorContent() {
                     <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Malayalam Tagline</label>
                     <button type="button" onClick={generateBio} className="text-xs text-purple-400 hover:text-purple-300 font-medium">Auto-Generate 🔮</button>
                   </div>
-                  <input type="text" name="malayalamTagline" value={formData.malayalamTagline} onChange={handleInputChange} className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
+                  <input type="text" name="malayalamTagline" value={formData.malayalamTagline} onChange={handleInputChange} placeholder="Show your regional flair (e.g. Oru cheriya developer...)" className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
                 </div>
               </div>
             )}
@@ -471,7 +463,7 @@ function EditorContent() {
               <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="flex flex-col gap-2">
                   <label className="text-xs font-semibold text-zinc-400 uppercase tracking-widest">Top Skills (comma separated)</label>
-                  <input type="text" name="skills" value={formData.skills} onChange={handleInputChange} className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
+                  <input type="text" name="skills" value={formData.skills} onChange={handleInputChange} placeholder="e.g. Next.js, Tailwind, MongoDB" className="bg-zinc-800/50 border border-zinc-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 text-white" />
                 </div>
 
                 <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-800/50">

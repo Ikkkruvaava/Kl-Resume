@@ -7,6 +7,11 @@ export const metadata = {
   metadataBase: new URL('http://localhost:3000'),
   title: 'KL RESUME - Professional Portfolio Engine',
   description: 'Design your high-end portfolio in seconds. Premium themes for Kerala\'s top creators.',
+  icons: {
+    icon: '/favicon/favicon.ico',
+    shortcut: '/favicon/favicon-32x32.png',
+    apple: '/favicon/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({ children }) {

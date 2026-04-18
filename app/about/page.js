@@ -13,9 +13,12 @@ export default function AboutPage() {
 
       <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-white/5 bg-black/20">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
-            <span className="text-xl font-black tracking-tighter">ABOUT <span className="text-purple-500">KL</span></span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="flex items-center gap-2">
+              <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
+              <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-8 h-8 rounded-lg group-hover:rotate-12 transition-transform" />
+            </div>
+            <span className="text-xl font-black tracking-tighter uppercase italic">About KL Resume</span>
           </Link>
           <Link href="/editor" className="bg-white text-black px-6 py-2 rounded-full text-sm font-black hover:bg-zinc-200 transition-all">
             CREATE NOW

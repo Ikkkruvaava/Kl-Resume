@@ -23,9 +23,12 @@ export default function ShowcasePage() {
 
       <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-white/5 bg-black/20">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
-            <span className="text-xl font-black tracking-tighter uppercase italic">The Showcase</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="flex items-center gap-2">
+              <ArrowLeft className="w-5 h-5 text-zinc-500 group-hover:text-white transition-colors" />
+              <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-8 h-8 rounded-lg group-hover:rotate-12 transition-transform" />
+            </div>
+            <span className="text-xl font-black tracking-tighter uppercase italic">KL Showcase</span>
           </Link>
           <div className="flex gap-4">
              <Link href="/editor" className="hidden md:flex items-center gap-2 text-zinc-400 hover:text-white transition-colors font-black uppercase text-xs tracking-widest px-4">

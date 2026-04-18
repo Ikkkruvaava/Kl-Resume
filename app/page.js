@@ -16,9 +16,9 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-white/5 bg-black/20">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-lg flex items-center justify-center font-black text-white italic">KL</div>
-            <span className="text-xl font-black tracking-tighter">RESUME</span>
+          <div className="flex items-center gap-3">
+            <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-10 h-10 rounded-xl shadow-lg shadow-purple-500/20" />
+            <span className="text-xl font-black tracking-tighter uppercase italic">KL RESUME</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-400">
             <Link href="/showcase" className="hover:text-white transition-colors">Showcase</Link>
@@ -52,13 +52,18 @@ export default function LandingPage() {
               </Link>
               <div className="flex items-center gap-4 px-8 py-5 text-zinc-500 font-bold">
                 <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 flex items-center justify-center text-[10px] font-black italic uppercase">
-                      User_{i}
+                  {[
+                    "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100&h=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&h=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&h=100&auto=format&fit=crop",
+                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&h=100&auto=format&fit=crop"
+                  ].map((url, i) => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 overflow-hidden">
+                      <img src={url} alt={`User ${i + 1}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
                 </div>
-                <span>Join 5,000+ creators</span>
+                <span>Join 500+ creators</span>
               </div>
             </div>
           </div>
@@ -74,9 +79,9 @@ export default function LandingPage() {
               className="w-full h-auto transform group-hover:scale-105 transition-transform duration-[2s]"
             />
             <div className="absolute bottom-12 left-12 z-30 flex flex-wrap gap-4">
-              {['View All Themes', 'Bento Grid', 'Cyber HUD', 'Hacker Terminal'].map(tag => (
+              {/* {['View All Themes', 'Bento Grid', 'Cyber HUD', 'Hacker Terminal'].map(tag => (
                 <span key={tag} className="px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-full text-xs font-black uppercase tracking-widest">{tag}</span>
-              ))}
+              ))} */}
             </div>
           </Link>
         </section>
@@ -144,16 +149,11 @@ export default function LandingPage() {
       <footer className="py-20 px-6 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-6 h-6 bg-white rounded-md flex items-center justify-center font-black text-black text-[10px] italic">KL</div>
-              <span className="text-lg font-black tracking-tighter">RESUME</span>
+            <div className="flex items-center gap-3 mb-4">
+              <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-8 h-8 rounded-lg" />
+              <span className="text-lg font-black tracking-tighter uppercase italic">KL RESUME</span>
             </div>
             <p className="text-zinc-500 text-sm font-bold">The #1 Portfolio Engine for Kerala's Creators.</p>
-          </div>
-          <div className="flex gap-8 text-xs font-black text-zinc-500 tracking-widest uppercase">
-            <Link href="/about" className="hover:text-white transition-colors">About</Link>
-            <Link href="/showcase" className="hover:text-white transition-colors">Themes</Link>
-            <Link href="/editor" className="hover:text-white transition-colors">Editor</Link>
           </div>
           <div className="flex items-center gap-2 text-zinc-500 font-bold text-sm">
             Made with <Heart className="w-4 h-4 text-pink-500 fill-pink-500" /> in Kerala

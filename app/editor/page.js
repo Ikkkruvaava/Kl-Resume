@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { Sparkles, Save, Rocket, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X, Copy, ExternalLink, PartyPopper, LogOut, User as UserIcon, LogIn } from 'lucide-react';
+import { Sparkles, Zap, Save, Rocket, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X, Copy, ExternalLink, PartyPopper, LogOut, User as UserIcon, LogIn } from 'lucide-react';
 import Link from 'next/link';
 import { savePortfolio, fetchUserData } from '../actions';
 import { SocialIcon, PLATFORMS } from '@/components/SocialIcon';

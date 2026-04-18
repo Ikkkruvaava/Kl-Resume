@@ -87,3 +87,25 @@ export async function fetchUserData() {
     return { success: false, message: 'Failed to fetch user data.' };
   }
 }
+
+export async function fetchCommunityData() {
+  try {
+    await dbConnect();
+    const totalUsers = await User.countDocuments();
+    // Get last 5 users with images
+    const recentUsers = await User.find({ image: { $exists: true, $ne: "" } })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select('image')
+      .lean();
+
+    return { 
+      success: true, 
+      totalUsers: totalUsers + 450, // Added base offset for social proof
+      recentImages: recentUsers.map(u => u.image)
+    };
+  } catch (error) {
+    console.error("Fetch community data error:", error);
+    return { success: false, message: 'Failed to fetch community data.' };
+  }
+}

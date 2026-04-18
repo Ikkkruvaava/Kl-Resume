@@ -3,9 +3,21 @@ import React from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { Rocket, Sparkles, Zap, Shield, Globe, Cpu, Smartphone, Layout, ArrowRight, Star, Heart } from 'lucide-react';
+import { fetchCommunityData } from './actions';
 
 export default function LandingPage() {
   const { data: session, status } = useSession();
+  const [community, setCommunity] = React.useState({ count: 500, images: [] });
+
+  React.useEffect(() => {
+    const getCommData = async () => {
+      const res = await fetchCommunityData();
+      if (res.success) {
+        setCommunity({ count: res.totalUsers, images: res.recentImages });
+      }
+    };
+    getCommData();
+  }, []);
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500/30 overflow-x-hidden">
       {/* Dynamic Background */}
@@ -63,18 +75,22 @@ export default function LandingPage() {
               </Link>
               <div className="flex items-center gap-4 px-8 py-5 text-zinc-500 font-bold">
                 <div className="flex -space-x-3">
-                  {[
-                    "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100&h=100&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&h=100&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&h=100&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&h=100&auto=format&fit=crop"
-                  ].map((url, i) => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 overflow-hidden">
-                      <img src={url} alt={`User ${i + 1}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
+                  {community.images.length > 0 ? (
+                    community.images.map((url, i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 overflow-hidden">
+                        <img src={url} alt={`User ${i + 1}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))
+                  ) : (
+                    // Fallback to high-quality avatars if no real ones yet or loading
+                    ["https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=100", "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100", "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100"].map((url, i) => (
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-black bg-zinc-800 overflow-hidden">
+                        <img src={url} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ))
+                  )}
                 </div>
-                <span>Join 500+ creators</span>
+                <span>Join {community.count}+ creators</span>
               </div>
             </div>
           </div>

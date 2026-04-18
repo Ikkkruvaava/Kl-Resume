@@ -2,9 +2,10 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Sparkles, Save, Rocket, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X, Copy, ExternalLink, PartyPopper } from 'lucide-react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { Sparkles, Save, Rocket, Link as LinkIcon, Image as ImageIcon, Plus, Trash2, ChevronDown, Mail, MessageCircle, MapPin, ArrowRight, ArrowLeft, CheckCircle2, Eye, X, Copy, ExternalLink, PartyPopper, LogOut, User as UserIcon, LogIn } from 'lucide-react';
 import Link from 'next/link';
-import { savePortfolio } from '../actions';
+import { savePortfolio, fetchUserData } from '../actions';
 import { SocialIcon, PLATFORMS } from '@/components/SocialIcon';
 import { THEMES } from '../themes';
 import { ThemeLayouts } from '@/components/themes';
@@ -18,10 +19,12 @@ const MALAYALAM_BIOS = [
 ];
 
 function EditorContent() {
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [showPreview, setShowPreview] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const totalSteps = 5;
   const [formData, setFormData] = useState({
     name: '',
@@ -45,6 +48,25 @@ function EditorContent() {
   const [newProject, setNewProject] = useState({ title: '', description: '', link: '', image: '' });
   const [newEdu, setNewEdu] = useState({ school: '', degree: '', year: '' });
   const [newExp, setNewExp] = useState({ company: '', role: '', duration: '', description: '' });
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (status === 'authenticated') {
+        const response = await fetchUserData();
+        if (response.success && response.data) {
+          setFormData(prev => ({
+            ...prev,
+            ...response.data
+          }));
+        }
+      }
+      setIsLoading(false);
+    };
+
+    if (status !== 'loading') {
+      loadUserData();
+    }
+  }, [status]);
 
   useEffect(() => {
     const themeParam = searchParams.get('theme');
@@ -204,10 +226,26 @@ function EditorContent() {
               Preview
             </button>
           )}
-          {/* <button onClick={handleClaimUrl} className="bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl font-bold flex items-center gap-2 transition text-sm text-white border border-white/5">
-            <LinkIcon className="w-4 h-4" />
-            Share
-          </button> */}
+          
+          {session ? (
+            <div className="flex items-center gap-3 bg-zinc-900 border border-white/5 p-1 rounded-full pr-4">
+              <img src={session.user.image} className="w-8 h-8 rounded-full border border-white/10" alt="" />
+              <button 
+                onClick={() => signOut()}
+                className="text-white/40 hover:text-white transition"
+                title="Sign Out"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button 
+              onClick={() => signIn('google')}
+              className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-full text-xs font-black flex items-center gap-2 transition"
+            >
+              <LogIn className="w-4 h-4" /> LOGIN
+            </button>
+          )}
         </div>
       </header>
 
@@ -223,6 +261,31 @@ function EditorContent() {
               <p className="text-xs text-zinc-400 mt-2 font-semibold uppercase tracking-widest">
                 Step {currentStep} of {totalSteps}: {['Select Theme', 'Identity', 'Career Legacy', 'Social Hub', 'Launch Portfolio'][currentStep - 1]}
               </p>
+              {!session && currentStep > 1 && (
+                <div className="absolute inset-0 z-[60] bg-black/80 backdrop-blur-md flex items-center justify-center p-8 text-center rounded-[2rem] animate-in fade-in duration-500">
+                  <div className="max-w-sm">
+                    <div className="w-20 h-20 bg-purple-500/20 text-purple-400 rounded-3xl flex items-center justify-center mb-6 mx-auto">
+                      <Zap className="w-10 h-10" />
+                    </div>
+                    <h3 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-4 leading-none">Identity <br /> Required</h3>
+                    <p className="text-zinc-400 text-sm font-bold uppercase tracking-widest mb-8 leading-relaxed">
+                      To personalize your legacy and save your progress, you need to establish a secure link.
+                    </p>
+                    <button 
+                      onClick={() => signIn('google')}
+                      className="w-full bg-white text-black font-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-zinc-200 transition active:scale-95 text-lg"
+                    >
+                      <LogIn className="w-5 h-5" /> SIGN IN WITH GOOGLE
+                    </button>
+                    <button 
+                      onClick={() => setCurrentStep(1)}
+                      className="mt-4 text-zinc-500 hover:text-white transition text-[10px] font-black uppercase tracking-[0.3em]"
+                    >
+                      Wait, go back
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           

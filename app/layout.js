@@ -14,11 +14,15 @@ export const metadata = {
   },
 };
 
+import { AuthProvider } from '@/components/AuthProvider';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans min-h-screen bg-black text-white selection:bg-purple-500/30`}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,9 +1,11 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { Rocket, Sparkles, Zap, Shield, Globe, Cpu, Smartphone, Layout, ArrowRight, Star, Heart } from 'lucide-react';
 
 export default function LandingPage() {
+  const { data: session, status } = useSession();
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-purple-500/30 overflow-x-hidden">
       {/* Dynamic Background */}
@@ -20,14 +22,23 @@ export default function LandingPage() {
             <img src="/favicon/android-chrome-192x192.png" alt="KL Logo" className="w-10 h-10 rounded-xl shadow-lg shadow-purple-500/20" />
             <span className="text-xl font-black tracking-tighter uppercase italic">KL RESUME</span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-400">
-            <Link href="/showcase" className="hover:text-white transition-colors">Showcase</Link>
-            <a href="#features" className="hover:text-white transition-colors">Features</a>
-            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+          <div className="flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-400">
+              <Link href="/showcase" className="hover:text-white transition-colors">Showcase</Link>
+              <a href="#features" className="hover:text-white transition-colors">Features</a>
+              <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            </div>
+            {status === 'authenticated' ? (
+              <Link href="/editor" className="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 p-1 rounded-full pr-4 transition-all group">
+                <img src={session.user.image} alt="" className="w-8 h-8 rounded-full border border-white/20" />
+                <span className="text-xs font-black uppercase tracking-widest text-white group-hover:text-purple-400">Go to Editor</span>
+              </Link>
+            ) : (
+              <Link href="/editor" className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-black hover:bg-zinc-200 transition-all active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                CREATE NOW
+              </Link>
+            )}
           </div>
-          <Link href="/editor" className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-black hover:bg-zinc-200 transition-all active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-            CREATE NOW
-          </Link>
         </div>
       </nav>
 
